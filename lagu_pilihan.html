@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <title>Projek Gabut</title>
+    <style>
+      #bgVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1; /* agar video di belakang konten */
+        opacity: 0.4; /* bisa diubah sesuai kejelasan teks */
+        pointer-events: none; /* agar tidak menghalangi klik */
+      }
+      
+      body {
+        background: url('bg/star-wars-battlefront-ii-battle-of-kamino-moewalls-com.mp4') no-repeat center center fixed;
+        background-size: cover;
+        background: rgb(0, 0, 0);
+        color: hsl(0, 8%, 23%);
+        text-align: center;
+        font-family: sans-serif;
+        padding: 30px;
+        font-size: auto;
+      }
+      body h1 {
+        color: violet;
+        font-size: 2em;
+        margin: 0;
+        text-shadow: 2px 2px 6px black;
+      }
+      body h2 {
+        color: violet;
+        font-size: 1.5em;
+        margin: 0;
+        text-shadow: 2px 2px 6px black;
+      }
+      .lyrics {
+        font-size: 2em;
+        margin-top: 40px;
+        height: 60px;
+        text-shadow: 2px 2px 6px black;
+      }
+      select, button {
+        padding: 1%;
+        margin: 10px;
+        font-size: 20px;
+      }
+    </style>
+</head>
+
+  <body>
+    <video autoplay muted loop playsinline id="bgVideo">
+      <source src="bg/destiny-2-beyond-light.3840x2160.mp4" type="video/mp4">
+      Browser kamu tidak mendukung video background.
+    </video>
+    
+    <h1>MUSIC</h1>
+    <h2>_____________________</h2>
+    
+    <!-- Ini adalah catatan developer -->
+    <!-- Bagian ini untuk video background -->
+    
+    <select id="songSelector">
+      <option value="karena">Karena Kamu - Geisha</option>
+      <option value="menghapus_jejakmu">Menghapus JejakMu - Noah</option>
+      <option value="thats_so_true">That So True - GRACIE</option>
+      <option value="good">Good Dream - Kirara Magic</option>
+      <option value="love_is_gone">Love Is Gone - Slander</option>
+      <option value="daylight">Daylight - Maroon 5</option>
+      <option value="letters">8 Letters - why don't we</option>
+      <option value="gak_pake_lama">Gak Pake Lama</option>    
+    </select>
+
+    <h3></h3>
+    <audio id="audioPlayer" controls></audio>
+    <div class="lyrics" id="lyricsDisplay">🎵🎵🎵</div>
+    
+    <script>
+      // Data lagu
+      const songData = {
+        karena: {
+          src:'audio/karena.mp3',
+          lyrics: [
+            { text: "🎵🎵🎵", time: 0},
+            { text: "(Hu, hu-uh)", time: 8 },
+            { text: "(Hu-uh, hu-uh-uh)", time: 11 },
+            { text: "Kar'na kamu, aku rela menunggu semua", time: 15 },
+            { text: "Sungguh berat yang kurasa", time: 20 },
+            { text: "Kar'na kamu, aku tetap bertahan", time: 23 },
+            { text: "Meskipun kini engkau di peluknya", time: 27 },
+            { text: "Masih mungkinkah semua", time: 31 },
+            { text: "Abadi seperti dahulu?", time: 34.8 },
+            { text: "Kar'namu, selalu kar'namu", time: 38.8 },
+            { text: "Ku cemburu", time: 42 },
+            { text: "Teruslah melangkah melupakan dirinya", time: 46 },
+            { text: "Tinggalkan dia untukku sekarang", time: 50 },
+            { text: "Saatnya tunjukkan semua tentang hatimu", time: 54 },
+            { text: "Bahwa akulah yang pantas untukmu", time: 58 },
+            { text: "Hanya kamu di setiap helaan nafasku", time: 61 },
+            { text: "Hanya kamu, hanya kamu", time: 68 },
+            { text: "Aku tahu engkau sangat dipuja mereka", time: 77 },
+            { text: "Bagai bintang yang bersinar", time: 82 },
+            { text: "Aku tahu ini semua jalanmu", time: 85 },
+            { text: "Tapi ku akan tetap menunggumu", time: 89 },
+            { text: "Jangan tinggalkan semua", time: 93 },
+            { text: "Sendiri seperti dahulu", time: 96 },
+            { text: "Kar'namu, selalu kar'namu", time: 100 },
+            { text: "Ku cemburu", time: 104 },
+            { text: "Teruslah melangkah melupakan dirinya", time: 109 },
+            { text: "Tinggalkan dia untukku sekarang", time: 112 },
+            { text: "Saatnya tunjukkan semua tentang hatimu", time: 116 },
+            { text: "Bahwa akulah yang pantas untukmu", time: 120 },
+            { text: "Hanya kamu di setiap helaan nafasku", time: 123 },
+            { text: "Hanya kamu, hanya kamu", time: 131 },
+            { text: "🎵🎵🎵", time: 137},
+            { text: "Masih mungkinkah semua", time: 151 },
+            { text: "Abadi seperti dahulu?", time: 155 },
+            { text: "Kar'namu, selalu kar'namu", time: 159 },
+            { text: "Ku cemburu, oh", time: 162 },
+            { text: "Teruslah melangkah melupakan dirinya", time: 166 },
+            { text: "Tinggalkan dia untukku sekarang", time: 170 },
+            { text: "Saatnya tunjukkan semua tentang hatimu", time: 174 },
+            { text: "Bahwa akulah yang pantas untukmu", time: 178 },
+            { text: "Teruslah melangkah melupakan dirinya", time: 182 },
+            { text: "Tinggalkan dia untukku sekarang (sekarang)", time: 185 },
+            { text: "Saatnya tunjukkan semua tentang hatimu", time: 190 },
+            { text: "Bahwa akulah yang pantas untukmu", time: 193 },
+            { text: "Hanya kamu di setiap helaan nafasku", time: 197 },
+            { text: "Hanya kamu, hanya kamu", time: 205 },
+            { text: "Hanya kamu, oh-oh", time: 212 },
+            { text: "Hm-mm-mm", time: 221 },
+            { text: "🎵🎵🎵", time: 225}
+          ]
+        },
+
+        menghapus_jejakmu: {
+          src: 'audio/hapus.mp3',
+          lyrics: [
+            { text:"Terus melangkah melupakanmu", time: 17 },
+            { text:"Lelah hati perhatikan sikapmu", time: 21.5 },
+            { text:"Jalan pikiranmu buatku ragu", time: 25 },
+            { text:"Tak mungkin ini tetap bertahan", time: 29 },
+            { text:"Perlahan mimpi terasa mengganggu", time: 33 },
+            { text:"Kucoba untuk terus menjauh", time: 37 },
+            { text:"Perlahan hatiku terbelenggu", time: 41 },
+            { text:"Kucoba untuk lanjutkan hidup", time: 45 },
+            { text:"Engkau bukanlah segalaku", time: 50 },
+            { text:"Bukan tempat tuk hentikan langkahku", time: 54 },
+            { text:"Usai sudah semua berlalu", time: 58 },
+            { text:"Biar hujan menghapus jejakmu", time: 62 },
+            { text:"Terus melangkah melupakanmu", time: 68 },
+            { text:"Lelah hati perhatikan sikapmu", time: 71 },
+            { text:"Jalan pikiranmu buatku ragu", time: 75 },
+            { text:"Tak mungkin ini tetap bertahan", time: 79 },
+            { text:"Perlahan mimpi terasa mengganggu", time: 83 },
+            { text:"Kucoba untuk terus menjauh", time: 87 },
+            { text:"Perlahan hatiku terbelenggu", time: 91 },
+            { text:"Kucoba untuk lanjutkan hidup", time: 94.8 },
+            { text:"Engkau bukanlah segalaku", time: 98 },
+            { text:"Bukan tempat tuk hentikan langkahku", time: 102 },
+            { text:"Usai sudah semua berlalu", time: 106 },
+            { text:"Biar hujan menghapus jejakmu", time: 110 },
+            { text:"Lepaskan segalanya", time: 116 },
+            { text:"Lepaskan segalanya", time: 120 },
+            { text: "🎵🎵🎵", time: 124},
+            { text:"Engkau bukanlah segalaku", time: 131 },
+            { text:"Bukan tempat tuk hentikan langkahku", time: 135 },
+            { text:"Usai sudah semua berlalu", time: 139 },
+            { text:"Biar hujan menghapus jejakmu", time: 142 },
+            { text:"Engkau bukanlah segalaku", time: 146 },
+            { text:"Bukan tempat tuk hentikan langkahku", time: 150 },
+            { text:"Usai sudah semua berlalu", time: 154 },
+            { text:"Biar hujan menghapus jejakmu", time: 158 },
+            { text:"Na na na", time: 161.5 }
+          ]
+        },
+
+        thats_so_true: {
+          src: 'audio/thatsotrue.mp3',
+          lyrics: [
+            { text: "I could go and read your mind", time: 0.8 },
+            { text: "I think about your dumb face all the time", time: 3 },
+            { text: "Living in your glass house, I'm outside, uh", time: 5.5 },
+            { text: "Looking into big blue eyes", time: 9.8 },
+            { text: "Did it just to hurt me and make me cry", time: 12 },
+            { text: "Smiling through it all, yeah, that's my life", time: 14 },
+            { text: "You're an idiot, now I'm sure", time: 16.5 },
+            { text: "Now I'm positive, I should go and warn her", time: 22 },
+            { text: "Ooh, bet you're thinking she's so cool", time: 26 },
+            { text: "Kickin' back on your couch, making eyes from across the room", time: 33 },
+            { text: "Wait, I think I've been there too, ooh", time: 37 },
+            { text: "What'd she do to get you off? (Uh-huh)", time: 45 },
+            { text: "Taking down her hair like, (Oh my God!)", time: 47 },
+            { text: "Taking off your shirt, I did that once, or twice, uh", time: 49 },
+            { text: "No, I know, I know, fuck off (uh-huh)", time: 53.5 },
+            { text: "But I think I like her, she's so fun", time: 56 },
+            { text: "Wait, I think I hate her, I'm not that evolved", time: 68 },
+            { text: "I'm sorry she's missing it, sad, sad boy", time: 61 },
+            { text: "Not my business, but I had to warn ya", time: 65 },
+            { text: "Ooh, bet you're thinking she's so cool", time: 71 },
+            { text: "Kickin' back on your couch, making eyes from across the room", time: 77 },
+            { text: "Wait, I think I've been there too, ooh", time: 82 },
+            { text: "Oh-ooh (ooh), you've got me thinking (got me) she's so cool (got me)", time: 88 },
+            { text: "But I know what I know, and you're just another dude", time: 95 },
+            { text: "Ooh, that's so true, ooh", time: 99 },
+            { text: "Made it out alive, but I think I lost it", time: 105 },
+            { text: "Said that I was fine, I said it from the coffin", time: 108 },
+            { text: "Remember how I died when you started walking?", time: 110 },
+            { text: "That's my life, that's my life", time: 112 },
+            { text: "I'll put up a fight, taking out my earrings", time: 114 },
+            { text: "Don't you know the vibe? Don't you know the feeling?", time: 117 },
+            { text: "You should spend the night, catch me on your ceiling", time: 119 },
+            { text: "That's your prize, that's your price, well", time: 121 },
+            { text: "Mm, bet you're thinking she's so cool", time: 124 },
+            { text: "Kickin' back on your couch, making eyes from across the room", time: 130 },
+            { text: "Wait, I think I've been there too, ooh", time: 135 },
+            { text: "Oh-ooh (ooh), you've got me thinking (got me) she's so cool (got me)", time: 141 },
+            { text: "But I know what I know, and you're just another dude", time: 148 },
+            { text: "Ooh, that's so true, ooh, ooh, oh", time: 153 }
+          ]
+        },
+        
+        good: {
+          src: 'audio/good.ogg',
+          lyrics: [
+            { text: "憂いな日々に 錆びて", time: 5 },
+            { text: "私の名前も 忘れていく", time: 7 },
+            { text: "綺麗な嘘ごと 自分を騙し続けて", time: 12 },
+            { text: "今 夢で会える", time: 19 },
+            { text: "🎵🎵🎵", time: 26},
+            { text: "霧が晴れない", time: 48 },
+            { text: "足跡を隠すように", time: 51 },
+            { text: "森に迷った 振りして", time: 53 },
+            { text: "ただ前に進めない", time: 59 },
+            { text: "明日は 来なくていい", time: 62 },
+            { text: "深い眠りに落ちていく", time: 65 },
+            { text: "お休み 今日は終わらせて", time: 69 },
+            { text: "お休み 長い夜に", time: 75 },
+            { text: "初めて 自分を許していい", time: 81 },
+            { text: "懐かしいのに", time: 87 },
+            { text: "🎵🎵🎵", time: 91},
+            { text: "また話をかけてもいい", time: 118 },
+            { text: "悪い夢から連れ出して", time: 123 },
+            { text: "羽ペンで一緒に絵描こう", time: 130 },
+            { text: "ふたりぼっちで夜空を", time: 134 },
+            { text: "お休み 今日は終わらせて", time: 140 },
+            { text: "お休み 長い夜に", time: 146 },
+            { text: "夜明けまで 魔法よ解けないて", time: 151 },
+            { text: "眠る森のお姫", time: 158 },
+            { text: "🎵🎵🎵", time: 162},
+            { text: "涙がそっと", time: 190 },
+            { text: "雨音に合わせてく", time: 195 },
+            { text: "悲しみを水に溶けて", time: 201 },
+            { text: "暖かい夢に変わる", time: 205 },
+            { text: "消えそうな時に (意識が)", time: 211 },
+            { text: "私を抱きしめて (おやすみ)", time: 216 },
+            { text: "緩やかに世界は回る", time: 221 },
+            { text: "明日もきっと会える", time: 227 },
+            { text: "🎵🎵🎵", time: 233},
+          ]
+        },
+
+        love_is_gone: {
+          src:'audio/love_is_gone.MP3',
+          lyrics: [
+            { text: "............", time: 0.1},
+            { text: "Don't go tonight", time: 14.5},
+            { text: "Stay here one more time", time: 18.5},
+            { text: "Remind me what it's like, oh", time: 22.5},
+            { text: "And let's fall in love one more time", time: 26},
+            { text: "I need you now by my side", time: 34.5},
+            { text: "It tears me up when you turn me down", time: 41.3},
+            { text: "I'm begging please, just stick around", time: 48},
+            { text: "I'm sorry, don't leave me, I want you here with me", time: 56},
+            { text: "I know that your love is gone", time: 62},
+            { text: "I can't breathe, I'm so weak, I know this isn't easy", time: 69},
+            { text: "Don't tell me that your love is gone", time: 76},
+            { text: "That your love is gone", time: 80.9},
+            { text: "Don't tell me that your love is gone", time: 90},
+            { text: "That your love is gone", time: 94.5},
+            { text: "I'm sorry, don't leave me, I want you here with me", time: 111.5},
+            { text: "I know that your love is gone", time: 119},
+            { text: "I can't breathe, I'm so weak, I know this isn't easy", time: 126.5},
+            { text: "Don't tell me that your love is gone", time: 137},
+            { text: "That your love is gone", time: 141.9},
+            { text: "Don't tell me that your love is gone", time: 149},
+            { text: "I can't breathe, I'm so weak, I know this isn't easy", time: 158.5},
+            { text: "Don't tell me that your love is gone", time: 166},
+            { text: "That your love is gone", time: 171.9},
+          ]
+        },
+
+        daylight: {
+          src:'audio/Maroon 5 - Daylight (Lyrics) (320).mp3',
+          lyrics: [
+            { text: "Here I am waiting, I'll have to leave soon", time: 0.1},
+            { text: "Why am I holding on?", time: 4.7},
+            { text: "We knew this day would come, we knew it all along", time: 8.9},
+            { text: "How did it come so fast?", time: 12.6},
+            { text: "This is our last night but it's late", time: 16},
+            { text: "And I'm trying not to sleep", time: 21.5},
+            { text: "'Cause I know, when I wake", time: 25.9},
+            { text: "I will have to slip away", time: 30},
+            { text: "And when the daylight comes I'll have to go", time: 35.9},
+            { text: "But tonight I'm gonna hold you so close", time: 39.8},
+            { text: "'Cause in the daylight we'll be on our own", time: 43.9},
+            { text: "But tonight I need to hold you so close", time: 48.5},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 52},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 59.9},
+            { text: "Here I am staring at your perfection", time: 69},
+            { text: "In my arms, so beautiful", time: 72},
+            { text: "The sky is getting bright, the stars are burning out", time: 77},
+            { text: "Somebody slow it down", time: 80.9},
+            { text: "This is way too hard", time: 84.2},
+            { text: "'Cause I know, when the sun comes up", time: 88},
+            { text: "I will leave, this is my last glance", time: 91},
+            { text: "That will soon be memory", time: 98},
+            { text: "And when the daylight comes I'll have to go", time: 101},
+            { text: "But tonight I'm gonna hold you so close", time: 105},
+            { text: "'Cause in the daylight we'll be on our own", time: 109},
+            { text: "But tonight I need to hold you so close", time: 114.2},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 118},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 126},
+            { text: "I never wanted to stop", time: 135},
+            { text: "Because I don't wanna start all over, start all over", time: 136.8},
+            { text: "I was afraid of the dark", time: 142.8},
+            { text: "But now it's all that I want, all that I want, all that I want", time: 144.7},
+            { text: "And when the daylight comes I'll have to go", time: 153.9},
+            { text: "But tonight I'm gonna hold you so close", time: 158},
+            { text: "'Cause in the daylight we'll be on our own", time: 161},
+            { text: "But tonight I need to hold you so close", time: 166},
+            { text: "And when the daylight comes I'll have to go", time: 169},
+            { text: "But tonight I'm gonna hold you so close", time: 174},
+            { text: "'Cause in the daylight we'll be on our own", time: 177.8},
+            { text: "But tonight I need to hold you so close", time: 181.9},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 186.6},
+            { text: "Ooh whoa, ooh whoa, ooh whoa", time: 194.7},
+            { text: "Ooh whoa (yeah), ooh whoa (yeah), ooh whoa (yeah)", time: 202},
+          ]
+        },
+
+        letters: {
+          src:'audio/8 letters.MP3',
+          lyrics: [
+            {text : 'Song by', time: 0},                     
+            {text : 'Why Dont We', time: 0},
+            {text : 'You know me the best', time: 0},
+            {text : 'You know my worst, see me hurt, but you dont judge', time: 0},
+            {text : 'That right there is the scariest feeling', time:0 },
+            {text : 'Opening and closing up again', time:0 },
+            {text : "I've been hurt, so I don't trust", time:0 },
+            {text : 'Now here we are, staring at the ceiling', time: 0},
+            {text : "I've said those words before, but it was a lie'", time: 0},
+            {text : 'And you deserve to hear them a thousand times', time: 0},
+            {text : 'If all it is is eight letters', time: 0},
+            {text : 'Why is it so hard to say?', time: 0},
+            {text : 'If all it is is eight letters', time: 0},
+            {text : ' Why am I in my own way?', time: 0},
+            {text : 'Why do I pull you close?', time: 0},
+            {text : 'And then ask you for space', time: 0},
+            {text : 'If all it is is eight letters',time:0 },
+            {text : "Why is it so hard to sa{text : 'y?",time:0 },
+            {text : "Isn't it amazing how almost every line on our hands align?",time:0 },
+            {text : ' When your hands in mine',time: 0},
+            {text : "It's like Im whole again, isn't that a sign?",time: 0},
+            {text : 'I should speak my mind',time:0 },
+            {text : "I've said those words before, but it was a lie", time: 0},
+            {text : "And you deserve to hear them a thousand times", time: 0 },
+            {text: "If all it is is eight letters", time: 0},
+            {text: "Why is it so hard to say?", time: 0 },
+            {text: "If all it is is eight letters", time: 0},
+            {text: "Why am I in my own way?", time: 0},
+            {text: "Why do I pull you close?", time:0 },
+            {text: "And then ask you for space", time: 0},
+            {text: "If all it is is eight letters", time: 0},
+            {text: " Why is it so hard to say? (Woah, oh yeah)", time: 0},
+            {text: "When I close my eyes", time: 0},
+            {text: "It's you there in my mind", time:0 },
+            {text: "When I close my eyes", time: 0},
+            {text: "If all it is is eight letters", time :0},
+            {text: "Why is it so hard to say?", time :0},
+            {text: "If all it is is eight letters", time: 0},
+            {text: "Why am I in my own way?", time: 0},
+            {text: "Why do I pull you close?", time: 0},
+            {text: "And then ask you for space", time: 0},
+            {text: "If all it is is eight letters", time: 0},
+            {text: "Why is it so hard to say?", time:0 },
+            {text: "If all it is is eight letters", time: 0},
+            {text: "When I close my eyes", time: 0},
+            {text: "It's you there in my mind (it's only you)", time: 0},
+            {text: "When I close my eyes", time:0 },
+            {text: "If all it is is eight letters", time:0 },
+            {text: "When I close my eyes", time: 0},
+            {text: "It's you there in my mind (you)", time: 0},
+            {text: "When I close my eyes", time: 0},
+            {text: "If all it is is eight letters", time: 0},          
+          ]
+        },
+
+        gak_pake_lama:{
+          src:'audio/gak_pake_lama.MP3',
+          lyrics: 
+          [
+              {text: "Setiap kali kita bertemu", time: 25.79},
+              {text: "Aku lihat kamu senyum padaku", time: 28.83},
+              {text: "Ku tahu kamu suka padaku", time: 32.22},
+              {text: "Tapi kamu ragu bilang begitu", time: 35.28},
+              {text: "Terlalu lama", time: 39.09},
+              {text: "Kamu membuang waktumu", time: 42.60},
+              {text: "Terlalu lama", time: 45.21},
+              {text: "Memendam rasa", time: 49.43},
+              {text: "Gak pake lama", time: 51.82},
+              {text: "Bilang saja kalau kau suka", time: 54.40},
+              {text: "Gak pake lama", "time": 58.30},
+              {text: "Bilang saja kalau kau cinta", time: 60.86},
+              {text: "Dan aku juga", time: 64.56},
+              {text: "Suka, suka kamu", time: 66.94},
+              {text: "Kutunggu sampai", time: 71.02},
+              {text: "Kamu bilang, \"I love you\"", time: 74.97},
+              {text: "Bilang, \"I love you\"", time: 81.51},
+              {text: "Setiap kali kita bertemu", time: 115.42},
+              {text: "Aku lihat kamu senyum padaku", time: 118.45},
+              {text: "Ku tahu kamu suka padaku", time: 121.94},
+              {text: "Tapi kamu ragu bilang begitu", time: 124.82},
+              {text: "Terlalu lama", time: 128.66},
+              {text: "Kamu membuang waktumu", time: 132.18},
+              {text: "Terlalu lama", time: 135.04},
+              {text: "Memendam rasa", time: 139.06},
+              {text: "Gak pake lama", time: 141.46},
+              {text: "Bilang saja kalau kau suka", time: 144.10},
+              {text: "Gak pake lama", time: 147.83},
+              {text: "Bilang saja kalau kau cinta", time: 150.46},
+              {text: "Dan aku juga", time: 154.27},
+              {text: "Suka, suka kamu", time: 156.55},
+              {text: "Kutunggu sampai", time: 160.57},
+              {text: "Kamu bilang, \"I love you\"", time: 164.51},
+              {text: "Bilang, \"I love you\"", time: 170.97}
+          ]
+
+        }
+      };
+
+      const songOrder = ['karena', 'menghapus_jejakmu', 'thats_so_true', 'good', 'love_is_gone', 'Daylight'];
+      
+      // Elemen
+      const audio = document.getElementById('audioPlayer');
+      const display = document.getElementById('lyricsDisplay');
+      const selector = document.getElementById('songSelector');
+      
+      // Variabel kontrol
+      let currentLyrics = [];
+      let lyricsIndex = 0;
+      let lyricsPlaying = false;
+      let lyricsTimer;
+      let startTime;
+      let lyricsTimeOffset = 0;
+      
+      // Daftar urutan lagu (key-nya harus sesuai dengan value di <option>)
+        // Fungsi load lagu
+        function loadSong(key) {
+          const song = songData[key];
+          audio.src = song.src;
+          currentLyrics = song.lyrics;
+          lyricsIndex = 0;
+          display.textContent = '............';
+          lyricsPlaying = false;
+          clearTimeout(lyricsTimer);
+          selector.value = key;
+        }
+        
+        // Fungsi tampilan lirik via timer
+        function displayLyrics() {
+          if (!lyricsPlaying) return;
+          const elapsed = (Date.now() - startTime) / 1000 + lyricsTimeOffset;
+          
+          if (lyricsIndex < currentLyrics.length && elapsed >= currentLyrics[lyricsIndex].time) {
+            display.textContent = currentLyrics[lyricsIndex].text;
+            lyricsIndex++;
+          }
+          
+          if (lyricsIndex < currentLyrics.length) {
+            lyricsTimer = setTimeout(displayLyrics, 50);
+          }
+        }
+        
+        // Event saat play
+        audio.addEventListener('play', () => {
+          lyricsIndex = 0;
+          lyricsPlaying = true;
+          startTime = Date.now() - audio.currentTime * 1000;
+          displayLyrics();
+        });
+        
+        // Event saat pause
+        audio.addEventListener('pause', () => {
+          lyricsPlaying = false;
+          clearTimeout(lyricsTimer);
+        });
+        
+        // Sinkronisasi backup via timeupdate
+        audio.addEventListener('timeupdate', () => {
+          if (lyricsIndex < currentLyrics.length) {
+            if (audio.currentTime >= currentLyrics[lyricsIndex].time) {
+              display.textContent = currentLyrics[lyricsIndex].text;
+              lyricsIndex++;
+            }
+          }
+        });
+        
+        // Autoplay lagu berikutnya saat selesai
+        audio.addEventListener('ended', () => {
+          const currentKey = selector.value;
+          const currentIndex = songOrder.indexOf(currentKey);
+          const nextIndex = (currentIndex + 1) % songOrder.length;
+          const nextKey = songOrder[nextIndex];
+          
+          loadSong(nextKey);
+          audio.play(); // auto-play lagu berikutnya
+        });
+        
+        // Ganti lagu
+        selector.addEventListener('change', () => {
+          loadSong(selector.value);
+        });
+        
+        //spasi=pause
+        document.addEventListener('keydown', (e) => {
+          if (e.code === 'space') {
+            e.preventDefault();
+            if (audio.paused) {
+              audio.play(); 
+            } else {
+              audio.paused();
+              }
+            }  
+        });
+
+
+        // lagu acak awal masuk
+        function getRandomSongKey() {
+          const randomIndex = Math.floor(Math.random() * songOrder.length);
+          return songOrder[randomIndex];
+        }
+        const randomSong = getRandomSongKey();
+        loadSong(randomSong);
+
+        </script>
+
+  </body>
+</html>
